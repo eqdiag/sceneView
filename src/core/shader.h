@@ -27,6 +27,8 @@ namespace core {
 		void setUniformFloat(const char* str, float value);
 		void setUniformFloat2(const char* str, float valueX, float valueY);
 		void setUniformFloat3(const char* str, float valueX, float valueY, float valueZ);
+		void setUniformFloat4(const char* str, float valueX, float valueY, float valueZ,float valueW);
+
 		void setUniformMat4(const char* str, float* value);
 
 

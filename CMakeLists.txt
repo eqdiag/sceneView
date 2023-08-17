@@ -10,7 +10,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("mesh_view")
+project ("sceneView")
 
 ## get submodules from github
 find_package(Git QUIET)
@@ -38,10 +38,6 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/assimp/CMakeLists.txt")
 endif()
 
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glm/CMakeLists.txt")
-    message(FATAL_ERROR "The glm submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
-
 file(
     GLOB imgui_src 
     "external/imgui/*.cpp" 
@@ -52,6 +48,8 @@ file(
 file(GLOB src
     "src/core/*.cpp"
     "src/core/gizmos/*.cpp"
+    "src/math/*.cpp"
+    "src/scene/*.cpp"
     "src/app/*.cpp"
 )
 
@@ -105,13 +103,14 @@ target_include_directories(
 	${PROJECT_NAME} 
 	PUBLIC external/glfw/include
     PUBLIC external/glad/include
-    PUBLIC external/glm
     PUBLIC external/imgui
     PUBLIC external/imgui/backends
     PUBLIC external/assimp/include
     PUBLIC src
     PUBLIC src/core
     PUBLIC src/core/gizmos
+    PUBLIC src/math
+    PUBLIC src/scene
     PUBLIC src/app
 )
 
@@ -126,7 +125,7 @@ target_link_libraries(
     assimp
 )
 
-set_property(TARGET mesh_view PROPERTY CXX_STANDARD 17)
+set_property(TARGET sceneView PROPERTY CXX_STANDARD 17)
 
 
 # TODO: Add tests and install targets if needed.

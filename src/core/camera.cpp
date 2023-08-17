@@ -1,8 +1,5 @@
 #include "camera.h"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/glm.hpp>
 #include <algorithm>
-#include <iostream>
 #define _USE_MATH_DEFINES
 #include <cmath>
 
@@ -21,19 +18,19 @@ const double core::FlyCamera::MAX_PHI = M_PI;
 const double core::ArcCamera::MIN_PHI = 0.0001;
 const double core::ArcCamera::MAX_PHI = M_PI - 0.0001;
 
-core::Camera::Camera(float theta, float phi, const glm::vec3& eye, const glm::vec3& up, const glm::vec3& forward, const glm::vec3& right)
+core::Camera::Camera(float theta, float phi, const math::Vec3& eye, const math::Vec3& up, const math::Vec3& forward, const math::Vec3& right)
     :mTheta{theta},mPhi{phi},mEye{eye},mUp{up},mForward{forward},mRight{right}
 {
 }
 
-core::FlyCamera::FlyCamera(const glm::vec3& eye) :
+core::FlyCamera::FlyCamera(const math::Vec3& eye) :
     Camera{
         static_cast<float>(0.5 * M_PI),
         static_cast <float>(0.5 * M_PI),
         eye,
-        glm::vec3(0.0,1.0,0.0),
-        glm::vec3(0.0,0.0,-1.0),
-        glm::vec3(1.0,0.0,0.0)
+        math::Vec3(0.0,1.0,0.0),
+        math::Vec3(0.0,0.0,-1.0),
+        math::Vec3(1.0,0.0,0.0)
     }
 {
     recomputeFrame();
@@ -65,23 +62,23 @@ void core::FlyCamera::setRadius(double radius)
     recomputeFrame();
 }
 
-void core::FlyCamera::reset(glm::vec3& center, double radius)
+void core::FlyCamera::reset(math::Vec3& center, double radius)
 {
     mTheta = static_cast<float>(0.5 * M_PI);
     mPhi = static_cast <float>(0.5 * M_PI);
     mEye = center;
-    mUp = glm::vec3(0.0, 1.0, 0.0);
-    mForward = glm::vec3(0.0, 0.0, -1.0);
-    mRight = glm::vec3(1.0, 0.0, 0.0);
+    mUp = math::Vec3(0.0, 1.0, 0.0);
+    mForward = math::Vec3(0.0, 0.0, -1.0);
+    mRight = math::Vec3(1.0, 0.0, 0.0);
 }
 
-glm::mat4 core::FlyCamera::getViewMatrix() const
+math::Mat4 core::FlyCamera::getViewMatrix() const
 {
-    glm::vec3 center = mEye + mForward;
-    return glm::lookAt(mEye, center, mUp);
+    math::Vec3 center = mEye + mForward;
+    return math::Mat4::lookAt(mEye, center, mUp);
 }
 
-glm::vec3 core::FlyCamera::getEye() const {
+math::Vec3 core::FlyCamera::getEye() const {
     return mEye;
 }
 
@@ -91,20 +88,21 @@ void core::FlyCamera::recomputeFrame() {
     float cp = cos(mPhi);
     float st = sin(mTheta);
     float ct = cos(mTheta);
-    mForward = glm::vec3(sp * ct, cp, -sp * st);
-    mRight = glm::normalize(glm::cross(mForward, mUp));
+    mForward = math::Vec3(sp * ct, cp, -sp * st);
+        
+    mRight = mForward.cross(mUp).normalize();
 }
 
 
 
-core::ArcCamera::ArcCamera(glm::vec3& center, float radius) :
+core::ArcCamera::ArcCamera(math::Vec3& center, float radius) :
     Camera{
         static_cast <float>(0.5 * M_PI),
         static_cast <float>(0.5 * M_PI),
-        center - radius * glm::vec3(0.0,0.0,-1.0),
-        glm::vec3(0.0,1.0,0.0),
-        glm::vec3(0.0,0.0,-1.0),
-        glm::vec3(1.0,0.0,0.0)
+        center - math::Vec3(0.0,0.0,-1.0) * radius,
+        math::Vec3(0.0,1.0,0.0),
+        math::Vec3(0.0,0.0,-1.0),
+        math::Vec3(1.0,0.0,0.0)
     },
     mCenter{ center },
     mRadius{ radius }
@@ -113,7 +111,7 @@ core::ArcCamera::ArcCamera(glm::vec3& center, float radius) :
 }
 
 core::ArcCamera::ArcCamera() :
-    ArcCamera(glm::vec3(0.0, 0.0, 0.0), 1.0)
+    ArcCamera(math::Vec3(0.0, 0.0, 0.0), 1.0)
 {
 }
 
@@ -145,7 +143,7 @@ void core::ArcCamera::setRadius(double radius)
     recomputeFrame();
 }
 
-void core::ArcCamera::reset(glm::vec3& center,double radius)
+void core::ArcCamera::reset(math::Vec3& center,double radius)
 {
     this->mCenter = center;
     this->mRadius = radius;
@@ -154,11 +152,11 @@ void core::ArcCamera::reset(glm::vec3& center,double radius)
     recomputeFrame();
 }
 
-glm::mat4 core::ArcCamera::getViewMatrix() const {
-    return glm::lookAt(mEye, mCenter, mUp);
+math::Mat4 core::ArcCamera::getViewMatrix() const {
+    return math::Mat4::lookAt(mEye, mCenter, mUp);
 }
 
-glm::vec3 core::ArcCamera::getEye() const {
+math::Vec3 core::ArcCamera::getEye() const {
     return mEye;
 }
 
@@ -167,9 +165,9 @@ void core::ArcCamera::recomputeFrame() {
     float cp = cos(mPhi);
     float st = sin(mTheta);
     float ct = cos(mTheta);
-    mEye = -mRadius * glm::vec3(sp * ct, cp, -sp * st) + mCenter;
-    mForward = glm::normalize(mCenter - mEye);
-    mRight = glm::normalize(glm::cross(mForward, mUp));
+    mEye = -math::Vec3(sp * ct, cp, -sp * st) * mRadius  + mCenter;
+    mForward = (mCenter - mEye).normalize();
+    mRight = mForward.cross(mUp).normalize();
 }
 
 

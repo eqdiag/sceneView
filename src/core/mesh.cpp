@@ -76,7 +76,7 @@ void core::Mesh::Render()
     glBindVertexArray(0);
 }
 
-glm::vec3 core::Mesh::getCentroid() const
+math::Vec3 core::Mesh::getCentroid() const
 {
     return mCentroid;
 }
@@ -107,15 +107,15 @@ const std::vector<GLuint>& core::Mesh::getIndices() const
     return mIndices;
 }
 
-glm::vec3 core::Mesh::getVertexPoint(int index) const
+math::Vec3 core::Mesh::getVertexPoint(int index) const
 {
     auto v = mVertexData.at(index);
-    return glm::vec3(v.x, v.y, v.z);
+    return math::Vec3(v.x, v.y, v.z);
 }
 
-glm::vec3 core::Mesh::getFaceCentroid(int faceIndex) const
+math::Vec3 core::Mesh::getFaceCentroid(int faceIndex) const
 {
-    glm::vec3 centroid{};
+    math::Vec3 centroid{};
     int c = 3 * faceIndex;
     centroid += getVertexPoint(mIndices.at(c));
     centroid += getVertexPoint(mIndices.at(c+1));
@@ -123,10 +123,10 @@ glm::vec3 core::Mesh::getFaceCentroid(int faceIndex) const
     return centroid / 3.0f;
 }
 
-glm::vec3 core::Mesh::getNormalVector(int index) const
+math::Vec3 core::Mesh::getNormalVector(int index) const
 {
     auto v = mVertexData.at(index);
-    return glm::vec3(v.nx, v.ny, v.nz);
+    return math::Vec3(v.nx, v.ny, v.nz);
 }
 
 void core::Mesh::computeOpposites()
@@ -173,18 +173,18 @@ void core::Mesh::computeFaceCentroids()
     }
 }
 
-std::pair<int,glm::vec3> core::Mesh::getIntersection(const glm::vec3& p, const glm::vec3& v) const
+std::pair<int, math::Vec3> core::Mesh::getIntersection(const math::Vec3& p, const math::Vec3& v) const
 {
-    glm::vec3 closest{mVertexData[0].x, mVertexData[0].y, mVertexData[0].z};
+    math::Vec3 closest{mVertexData[0].x, mVertexData[0].y, mVertexData[0].z};
     auto dx = p - closest;
-    float dist2{ glm::dot(dx,dx) };
+    float dist2{ dx.dot(dx)};
     int hitFace = -1;
 
     for (int f = 0; f < mIndices.size() / 3; f++) {
         auto hit = computeTriangleInteresection(p, v, f);
         if (hit.has_value()) {
             dx = hit.value() - mFaceCentroids.at(f);
-            auto newDist = glm::dot(dx, dx);
+            auto newDist = dx.dot(dx);
             if (newDist < dist2) {
                 dist2 = newDist;
                 closest = hit.value();
@@ -226,28 +226,28 @@ int core::Mesh::corner(int v) const
 
 void core::Mesh::computeBoundingSphere()
 {
-    mCentroid = glm::vec3();
+    mCentroid = math::Vec3();
     mRadius = 0.0f;
     for (auto& v : mVertexData) {
-        auto vec = glm::vec3(v.x, v.y, v.z);
+        auto vec = math::Vec3(v.x, v.y, v.z);
         mCentroid += vec;
-        mRadius = std::fmax(mRadius, glm::length(vec));
+        mRadius = std::fmax(mRadius, vec.norm());
     }
     mCentroid /= mVertexData.size();
 }
 
-glm::vec3 core::Mesh::getVertexData(int c) const
+math::Vec3 core::Mesh::getVertexData(int c) const
 {
     auto v = mVertexData.at(vertex(c));
-    return glm::vec3(v.x, v.y, v.z);
+    return math::Vec3(v.x, v.y, v.z);
 }
 
 bool core::Mesh::checkOpposites(int c0, int c1) const
 {
     auto dx = getVertexData(next(c0)) - getVertexData(prev(c1));
-    if (glm::dot(dx, dx) > 0.001) return false;
+    if (dx.dot(dx) > 0.001) return false;
     dx = getVertexData(prev(c0)) - getVertexData(next(c1));
-    if (glm::dot(dx,dx) > 0.001) return false;
+    if (dx.dot(dx) > 0.001) return false;
     return true;
 }
 
@@ -266,25 +266,25 @@ void core::Mesh::computeFaceNormals(const std::vector<VertexData>& vertexData, c
         auto v0 = vertexData.at(indices.at(c));
         auto v1 = vertexData.at(indices.at(c+1));
         auto v2 = vertexData.at(indices.at(c+2));
-        glm::vec3 v0Vec{v0.x, v0.y, v0.z};
-        glm::vec3 v1Vec{v1.x, v1.y, v1.z};
-        glm::vec3 v2Vec{v2.x, v2.y, v2.z};
-        glm::vec3 normal{glm::normalize(glm::cross(v1Vec - v0Vec, v2Vec - v0Vec))};
+        math::Vec3 v0Vec{v0.x, v0.y, v0.z};
+        math::Vec3 v1Vec{v1.x, v1.y, v1.z};
+        math::Vec3 v2Vec{v2.x, v2.y, v2.z};
+        math::Vec3 normal{(v1Vec - v0Vec).cross(v2Vec - v0Vec).normalize()};
         //glm::vec3 normal{0, 0., 1};
 
-        v0.nx = normal.x;
-        v0.ny = normal.y;
-        v0.nz = normal.z;
+        v0.nx = normal.x();
+        v0.ny = normal.y();
+        v0.nz = normal.z();
         mVertexData.push_back(v0);
 
-        v1.nx = normal.x;
-        v1.ny = normal.y;
-        v1.nz = normal.z;
+        v1.nx = normal.x();
+        v1.ny = normal.y();
+        v1.nz = normal.z();
         mVertexData.push_back(v1);
 
-        v2.nx = normal.x;
-        v2.ny = normal.y;
-        v2.nz = normal.z;
+        v2.nx = normal.x();
+        v2.ny = normal.y();
+        v2.nz = normal.z();
         mVertexData.push_back(v2);
 
         mIndices.push_back(c);
@@ -306,21 +306,21 @@ int core::Mesh::swing(int c) const
 }
 
 
-std::optional<glm::vec3> core::Mesh::computeTriangleInteresection(const glm::vec3& p, const glm::vec3& v,int faceId) const
+std::optional<math::Vec3> core::Mesh::computeTriangleInteresection(const math::Vec3& p, const math::Vec3& v,int faceId) const
 {
     int c = 3 * faceId;
     auto data = mVertexData.at(mIndices.at(c));
-    auto p0 = glm::vec3(data.x, data.y, data.z);
-    auto n = glm::vec3(data.nx, data.ny, data.nz);
+    auto p0 = math::Vec3(data.x, data.y, data.z);
+    auto n = math::Vec3(data.nx, data.ny, data.nz);
 
-    float denom = glm::dot(n, v);
+    float denom = n.dot(v);
     //Parallel ray case
     if (fabs(denom) < 0.001f) return std::nullopt;
 
-    float num = -glm::dot(n, p - p0);
+    float num = -n.dot(p - p0);
     float t = num / denom;
 
-    return std::make_optional<glm::vec3>(p + t*v);
+    return std::make_optional<math::Vec3>(p + v*t);
 }
 
 

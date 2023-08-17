@@ -5,9 +5,9 @@
 #include <optional>
 
 #include <glad/glad.h>
-#include "glm/glm.hpp"
 
 #include "core/shader.h"
+#include "math/vec.h"
 
 namespace core {
 
@@ -31,19 +31,19 @@ namespace core {
 
         virtual void Render();
 
-        glm::vec3 getCentroid() const;
+        math::Vec3 getCentroid() const;
         float getBoundingRadius() const;
         const int getNumVertices() const;
         const int getNumIndices() const;
         const std::vector<VertexData>& getVertexData() const;
         const std::vector<GLuint>& getIndices() const;
-        glm::vec3 getVertexPoint(int index) const;
-        glm::vec3 getFaceCentroid(int faceIndex) const;
-        glm::vec3 getNormalVector(int index) const;
+        math::Vec3 getVertexPoint(int index) const;
+        math::Vec3 getFaceCentroid(int faceIndex) const;
+        math::Vec3 getNormalVector(int index) const;
         void computeOpposites();
 
         void computeFaceCentroids();
-        std::pair<int,glm::vec3> getIntersection(const glm::vec3& p, const glm::vec3& v) const;
+        std::pair<int, math::Vec3> getIntersection(const math::Vec3& p, const math::Vec3& v) const;
 
         //Uses corners representation of opposites table
         int face(int c) const;
@@ -59,13 +59,13 @@ namespace core {
         GLuint mVAO, mVBO, mEBO;
 
         float mRadius;
-        glm::vec3 mCentroid;
+        math::Vec3 mCentroid;
 
         std::vector<VertexData> mVertexData;
         std::vector<GLuint> mIndices;
         std::vector<int> mOpposites;
 
-        std::vector<glm::vec3> mFaceCentroids;
+        std::vector<math::Vec3> mFaceCentroids;
 
         //Variables keeping track of cached computations
         bool mOppositesComputed;
@@ -79,13 +79,13 @@ namespace core {
 
         
 
-        glm::vec3 getVertexData(int c) const;
+        math::Vec3 getVertexData(int c) const;
 
         bool checkOpposites(int c0, int c1) const;
         void computeFaceNormals(const std::vector<VertexData>& vertexData, const std::vector<GLuint>& indices);
 
     private:
-        std::optional<glm::vec3> computeTriangleInteresection(const glm::vec3& p,const glm::vec3& v,int faceId) const;
+        std::optional<math::Vec3> computeTriangleInteresection(const math::Vec3& p,const math::Vec3& v,int faceId) const;
         
 
     };
