@@ -35,4 +35,4 @@ make
 
                        
 ## Copyright and Attribution
-Copyright (c) 2023 eqdiag Released under the [MIT License](https://github.com/eqdiag/sceneView/blob/main/LICENSE).
+Copyright (c) 2023 eqdiag. Released under the [MIT License](https://github.com/eqdiag/sceneView/blob/main/LICENSE).
