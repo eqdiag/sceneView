@@ -76,7 +76,7 @@ std::vector<GLuint> core::gizmos::Cone::generateIndices(int numSideFaces)
 }
 
 core::gizmos::ConeGizmo::ConeGizmo(float height, float radius, std::shared_ptr<Cone> mesh):
-	Gizmo{ mesh, Transform{glm::vec3(radius,height * 0.5,radius)} }
+	Gizmo{ mesh, Transform{math::Vec3(radius,height * 0.5,radius)} }
 {
 }
 

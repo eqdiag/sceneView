@@ -1,5 +1,4 @@
 #include <iostream>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "core/gizmo.h"
 
@@ -36,8 +35,8 @@ void core::Gizmo::Render(Shader& shader,const Transform& parentTransform)
 	//Update model transform for this gizmo
 	Transform totalTransform{ parentTransform * mLocalTransform };
 	//Transform totalTransform{ localTransform };
-	glm::mat4 transformMat{totalTransform.getMatrix()};
-	shader.setUniformMat4("model", glm::value_ptr(transformMat));
+	math::Mat4 transformMat{totalTransform.getMatrix()};
+	shader.setUniformMat4("model", transformMat.getRawData());
 
 	//First render this gizmo's mesh
 	if(mMesh != nullptr) mMesh->Render();

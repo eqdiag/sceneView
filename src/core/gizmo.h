@@ -17,7 +17,7 @@ namespace core {
 		Transform getTransform() const;
 		void setTransform(const Transform& transform);
 
-		void Render(Shader& shader, const Transform& parentTransform = glm::mat4(1.0f));
+		void Render(Shader& shader, const Transform& parentTransform = math::Mat4{});
 
 		bool isSelected() const;
 		void select();

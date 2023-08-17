@@ -99,7 +99,7 @@ std::vector<GLuint> core::gizmos::Cylinder::generateIndices(int numSideFaces)
 }
 
 core::gizmos::CylinderGizmo::CylinderGizmo(float height, float radius, std::shared_ptr<Cylinder> mesh):
-	Gizmo {mesh, Transform{glm::vec3(radius,height * 0.5,radius)}}
+	Gizmo {mesh, Transform{math::Vec3(radius,height * 0.5,radius)}}
 {
 }
 

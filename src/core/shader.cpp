@@ -110,9 +110,19 @@ void core::Shader::setUniformFloat3(const char* str, float valueX, float valueY,
     glUniform3f(getUniformLocation(str), valueX, valueY, valueZ);
 }
 
+void core::Shader::setUniformFloat3(const char* str, const math::Vec3& v)
+{
+    glUniform3f(getUniformLocation(str), v[0], v[1], v[2]);
+}
+
 void core::Shader::setUniformFloat4(const char* str, float valueX, float valueY, float valueZ, float valueW)
 {
     glUniform4f(getUniformLocation(str), valueX, valueY, valueZ,valueW);
+}
+
+void core::Shader::setUniformFloat4(const char* str, const math::Vec4& v)
+{
+    glUniform4f(getUniformLocation(str), v[0], v[1], v[2], v[3]);
 }
 
 void core::Shader::setUniformMat4(const char* str, float* value)

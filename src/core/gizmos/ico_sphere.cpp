@@ -22,7 +22,7 @@ std::vector<GLuint> core::gizmos::IcoSphere::mIndices{
 
 
 core::gizmos::IcoSphereGizmo::IcoSphereGizmo(std::shared_ptr<IcoSphere> mesh, float size):
-	Gizmo{ mesh,Transform{glm::vec3(size)}}
+	Gizmo{ mesh,Transform{math::Vec3(size)}}
 {
 }
 
