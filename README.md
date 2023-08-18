@@ -17,7 +17,7 @@ cmake ../..
 make
 ```
 
-## GUI Keyboard Usage
+## Keyboard Controls
 
   * `1` Load "assets/models/cube.obj" mesh
   * `2` Load "assets/models/teapot.obj" mesh
@@ -28,7 +28,7 @@ make
   * `ESC` Exit program
 
 
-## GUI Mouse Usage
+## Mouse Controls
   * `mouseScroll` Controls camera zoom
   * `mouseMove` Controls camera rotation around mesh
 
