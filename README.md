@@ -1,8 +1,8 @@
 # sceneView
 
-Simple application for viewing 3d meshes lit with the phong shading model(https://en.wikipedia.org/wiki/Phong_shading).
+Simple application for viewing 3d meshes lit with the [phong shading model](https://en.wikipedia.org/wiki/Phong_shading)
 
-Uses my custom math library: gMath(https://github.com/eqdiag/gMath).
+Uses my custom math library: [gMath](https://github.com/eqdiag/gMath)
 
 All dependencies are self-contained in this project using git's submodule system.
 
