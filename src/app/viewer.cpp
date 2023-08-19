@@ -32,12 +32,16 @@ Viewer::Viewer():
 
 void Viewer::init()
 {
-
+	
 	//Create graphics assets
 	mNormalShader.init(SHADER_DIR, "basic.vs", "basic.fs");
-	mPhongShader.init(SHADER_DIR, "phong.vs", "phong.fs");
-	
+
+//TODO: bug on mac is in here!!!
+	//mPhongShader.init(SHADER_DIR, "phong.vs", "phong.fs");
+//^- somehow loading the phong shader causes a bug?
+	if(glGetError() == GL_INVALID_OPERATION) std::cout << "op invalid\n";
 	mMesh = mLoader.loadMesh(MODEL_DIR, "cube.obj");
+	if(glGetError() != GL_NO_ERROR) std::cout << "mesh is problem\n";
 	auto centroid = mMesh->getCentroid();
 	mCamera = std::make_unique<core::ArcCamera>(centroid, 2.0 * mMesh->getBoundingRadius());
 
@@ -60,7 +64,7 @@ void Viewer::init()
 
 	mCurrentShader = &mNormalShader;
 
-	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClearColor(1.0f, 0.22f, 0.22f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 
 }

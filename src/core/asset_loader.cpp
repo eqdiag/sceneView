@@ -70,8 +70,9 @@ std::unique_ptr<core::Mesh> core::AssetLoader::buildMesh(aiMesh * mesh){
             indices.push_back(face.mIndices[j]);
         }
     }
- 
-
+	std::cout << vertices.size() << std::endl; 
+	auto err = glGetError();
+	if(err == GL_INVALID_OPERATION) std::cout <<"invalid!\n";
     return std::make_unique<Mesh>( vertices, indices ,false);
 }
 
