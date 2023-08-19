@@ -38,7 +38,8 @@ void Viewer::init()
 	mPhongShader.init(SHADER_DIR, "phong.vs", "phong.fs");
 	
 	mMesh = mLoader.loadMesh(MODEL_DIR, "cube.obj");
-	mCamera = std::make_unique<core::ArcCamera>(mMesh->getCentroid(), 2.0 * mMesh->getBoundingRadius());
+	auto centroid = mMesh->getCentroid();
+	mCamera = std::make_unique<core::ArcCamera>(centroid, 2.0 * mMesh->getBoundingRadius());
 
 	auto eye = mCamera->getEye();
 
@@ -119,6 +120,6 @@ void Viewer::toggleShader()
 void Viewer::replaceMesh(std::unique_ptr<core::Mesh> newMesh)
 {
 	mMesh.swap(newMesh);
-
-	mCamera->reset(mMesh->getCentroid(), 2.0 * mMesh->getBoundingRadius());
+	auto centroid = mMesh->getCentroid();
+	mCamera->reset(centroid, 2.0 * mMesh->getBoundingRadius());
 }

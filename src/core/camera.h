@@ -74,7 +74,6 @@ namespace core {
 
     public:
         ArcCamera(math::Vec3& center, float radius);
-        ArcCamera();
         void translate(float x, float y, float z) override;
         void rotateTheta(float dtheta) override;
         void rotatePhi(float dphi) override;

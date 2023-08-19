@@ -110,10 +110,6 @@ core::ArcCamera::ArcCamera(math::Vec3& center, float radius) :
     recomputeFrame();
 }
 
-core::ArcCamera::ArcCamera() :
-    ArcCamera(math::Vec3(0.0, 0.0, 0.0), 1.0)
-{
-}
 
 void core::ArcCamera::translate(float x, float y, float z) {
     

@@ -53,12 +53,13 @@ file(GLOB src
     "src/app/*.cpp"
 )
 
+message("HEY: ${CMAKE_CURRENT_LIST_DIR}")
 #Set asset paths
 set(ASSET_DIR 
-    " \"${CMAKE_CURRENT_BINARY_DIR}/../../../assets/\" "
+	" \"${CMAKE_CURRENT_LIST_DIR}/assets/\" "
 )
-set(SHADER_DIR " \"${CMAKE_CURRENT_BINARY_DIR}/../../../assets/shaders/\" ")
-set(MODEL_DIR " \"${CMAKE_CURRENT_BINARY_DIR}/../../../assets/models/\" ")
+set(SHADER_DIR " \"${CMAKE_CURRENT_LIST_DIR}/assets/shaders/\" ")
+set(MODEL_DIR " \"${CMAKE_CURRENT_LIST_DIR}/assets/models/\" ")
 
 message("Using Asset directory: ${ASSET_DIR}")
 message("Using Shader directory: ${SHADER_DIR}")

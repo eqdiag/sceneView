@@ -1,3 +1,3 @@
-#define ASSET_DIR  "C:/Users/Daniel/source/repos/sceneView/out/build/x64-Debug/../../../assets/" 
-#define SHADER_DIR  "C:/Users/Daniel/source/repos/sceneView/out/build/x64-Debug/../../../assets/shaders/"  
-#define MODEL_DIR  "C:/Users/Daniel/source/repos/sceneView/out/build/x64-Debug/../../../assets/models/" 
+#define ASSET_DIR  "/Users/eqdiag/code/sceneView/assets/" 
+#define SHADER_DIR  "/Users/eqdiag/code/sceneView/assets/shaders/"  
+#define MODEL_DIR  "/Users/eqdiag/code/sceneView/assets/models/" 

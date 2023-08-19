@@ -18,8 +18,8 @@ class Viewer : public core::App {
 public:
 	Viewer();
 	void init() override;
-	void update();
-	void render();
+	void update() override;
+	void render() override;
 
 	void loadNewMesh(const char* modelFilename);
 	void toggleShader();
