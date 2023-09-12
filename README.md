@@ -32,6 +32,11 @@ make
   * `mouseScroll` Controls camera zoom
   * `mouseMove` Controls camera rotation around mesh
 
+# Screenshots
+## Normal Shading
+![Normal](/screenshots/normal_shade.gif "Normal")
+## Phong Shading
+![Phong](/screenshots/lighting.gif "Phong")
 
                        
 ## Copyright and Attribution
